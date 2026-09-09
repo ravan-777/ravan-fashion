@@ -30,3 +30,25 @@ function openFilters(){document.getElementById('filters').classList.add('open')}
 function closeM(){document.querySelectorAll('.overlay').forEach(x=>x.classList.remove('open'))}
 document.getElementById('chips').innerHTML=['all','men','women','accessories','new','sale'].map(x=>`<button data-f="${x}" onclick="setFilter('${x}')">${x==='all'?'All':x.replace(/^./,c=>c.toUpperCase())}</button>`).join('');
 document.querySelector('#chips button').classList.add('active');save();render();
+function cartTotal(){return cart.reduce((t,x)=>{const p=products.find(p=>p.id===x.id);return t+(p?p.price*x.qty:0)},0)}
+function openCheckout(){
+  if(!cart.length){alert('Your bag is empty.');return}
+  const subtotal=cartTotal();
+  const shipping=subtotal>=2999?0:199;
+  document.getElementById('checkoutItems').innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);return `<div class="checkout-item"><span>${p.name}<small>${x.size} / ${x.color} × ${x.qty}</small></span><b>${money(p.price*x.qty)}</b></div>`}).join('');
+  document.getElementById('checkoutSubtotal').textContent=money(subtotal);
+  document.getElementById('checkoutShipping').textContent=shipping?money(shipping):'FREE';
+  document.getElementById('checkoutTotal').textContent=money(subtotal+shipping);
+  document.getElementById('checkout').classList.add('open');
+}
+function placeOrder(e){
+  e.preventDefault();
+  if(!cart.length)return;
+  const subtotal=cartTotal(), shipping=subtotal>=2999?0:199, total=subtotal+shipping;
+  const orderId='RAVAN-'+Date.now().toString().slice(-8);
+  const order={orderId,createdAt:new Date().toISOString(),customer:{name:document.getElementById('cName').value.trim(),phone:document.getElementById('cPhone').value.trim(),email:document.getElementById('cEmail').value.trim(),address:document.getElementById('cAddress').value.trim(),city:document.getElementById('cCity').value.trim(),pin:document.getElementById('cPin').value.trim(),state:document.getElementById('cState').value,landmark:document.getElementById('cLandmark').value.trim()},items:cart.map(x=>({...x})),subtotal,shipping,total,status:'Pending Payment'};
+  localStorage.ravanLastOrder=JSON.stringify(order);
+  localStorage.ravanOrders=JSON.stringify([order,...JSON.parse(localStorage.ravanOrders||'[]')]);
+  cart=[];save();closeM();
+  alert(`Order ${orderId} created successfully. Payment integration will be connected in the next phase.`);
+}
