@@ -99,13 +99,9 @@ export default {
       return json({ok:true,order:{orderId:id,subtotal,shipping,total,status:'Pending Payment',createdAt:now}} ,201);
     }
 
-    if (path === '/api/orders' && request.method === 'GET') {
-      if (!env.DB) return json({ok:false,error:'D1 database is not connected yet'},503);
-      const {results} = await env.DB.prepare('SELECT id,customer_email,subtotal,shipping,total,status,created_at FROM orders ORDER BY created_at DESC LIMIT 100').all();
-      return json({ok:true,orders:results});
-    }
-
-    if (env.ASSETS) return env.ASSETS.fetch(request);
-return new Response(null,{status:404});
-  }
-};
+    if (path === '/api/admin/orders' && request.method === 'GET') {
+  if (!ctx.access) return json({ok:false,error:'Admin access required'},403);
+  if (!env.DB) return json({ok:false,error:'D1 database is not connected yet'},503);
+  const {results} = await env.DB.prepare('SELECT id,customer_email,subtotal,shipping,total,status,created_at FROM orders ORDER BY created_at DESC LIMIT 100').all();
+  return json({ok:true,orders:results});
+        }
