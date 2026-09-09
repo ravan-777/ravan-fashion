@@ -1,2 +1,1 @@
-# ravan-fashion
-RAVAN Fashion Store
+RAVAN Product Catalogue v2 — 12 products, filters, search, product details, size/color selection, cart and wishlist. Front-end only; real payment/backend comes next.
