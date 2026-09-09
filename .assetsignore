@@ -1,1 +1,6 @@
-
+src/
+migrations/
+wrangler.jsonc
+README.md
+.git/
+.gitignore
