@@ -41,14 +41,31 @@ function openCheckout(){
   document.getElementById('checkoutTotal').textContent=money(subtotal+shipping);
   document.getElementById('checkout').classList.add('open');
 }
-function placeOrder(e){
+async function placeOrder(e){
   e.preventDefault();
   if(!cart.length)return;
   const subtotal=cartTotal(), shipping=subtotal>=2999?0:199, total=subtotal+shipping;
+  const customer={name:document.getElementById('cName').value.trim(),phone:document.getElementById('cPhone').value.trim(),email:document.getElementById('cEmail').value.trim(),address:document.getElementById('cAddress').value.trim(),city:document.getElementById('cCity').value.trim(),pin:document.getElementById('cPin').value.trim(),state:document.getElementById('cState').value,landmark:document.getElementById('cLandmark').value.trim()};
+  const payload={customer,items:cart.map(x=>({...x})),subtotal,shipping,total};
+
+  try{
+    const res=await fetch('/api/orders',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({}));
+    if(res.ok && data.ok){
+      localStorage.ravanLastOrder=JSON.stringify(data.order);
+      cart=[];save();closeM();
+      alert(`Order ${data.order.orderId} created successfully. Your order is saved in RAVAN database.`);
+      return;
+    }
+    if(res.status!==503) throw new Error(data.error||'Order could not be created.');
+  }catch(err){
+    console.warn('Backend order API unavailable; using local demo fallback.',err);
+  }
+
   const orderId='RAVAN-'+Date.now().toString().slice(-8);
-  const order={orderId,createdAt:new Date().toISOString(),customer:{name:document.getElementById('cName').value.trim(),phone:document.getElementById('cPhone').value.trim(),email:document.getElementById('cEmail').value.trim(),address:document.getElementById('cAddress').value.trim(),city:document.getElementById('cCity').value.trim(),pin:document.getElementById('cPin').value.trim(),state:document.getElementById('cState').value,landmark:document.getElementById('cLandmark').value.trim()},items:cart.map(x=>({...x})),subtotal,shipping,total,status:'Pending Payment'};
+  const order={orderId,createdAt:new Date().toISOString(),customer,items:cart.map(x=>({...x})),subtotal,shipping,total,status:'Pending Payment',mode:'local-demo'};
   localStorage.ravanLastOrder=JSON.stringify(order);
   localStorage.ravanOrders=JSON.stringify([order,...JSON.parse(localStorage.ravanOrders||'[]')]);
   cart=[];save();closeM();
-  alert(`Order ${orderId} created successfully. Payment integration will be connected in the next phase.`);
+  alert(`Order ${orderId} created successfully. Demo/local order saved. Connect D1 to enable database orders.`);
 }
