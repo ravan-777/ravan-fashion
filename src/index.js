@@ -105,6 +105,7 @@ export default {
       return json({ok:true,orders:results});
     }
 
-    return new Response(null,{status:404});
+    if (env.ASSETS) return env.ASSETS.fetch(request);
+return new Response(null,{status:404});
   }
 };
