@@ -3,6 +3,15 @@
   "name": "ravan-fashion",
   "main": "src/index.js",
   "compatibility_date": "2026-09-09",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ravan-fashion-db",
+      "database_id": "5b5d17d7-b36b-4c77-8d73-a6db13f97d26"
+    }
+  ],
+
   "assets": {
     "directory": ".",
     "not_found_handling": "single-page-application",
