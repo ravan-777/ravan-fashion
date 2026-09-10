@@ -1,3 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RAVAN — Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #070707;
+      --panel: #111111;
+      --panel2: #151515;
+      --border: #292929;
+      --text: #ffffff;
+      --muted: #888888;
+      --gold: #f5c542;
+      --green: #4ade80;
+      --red: #ff6b6b;
+    }
+
+    body {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding-bottom: 22px;
+      margin-bottom: 28px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 5px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+      border-radius: 7px;
+      padding: 11px 17px;
+      transition: 0.2s ease;
+    }
+
+    .refresh-btn {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .refresh-btn:hover {
+      opacity: 0.82;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 16px;
+    }
+
+    .status {
+      color: #aaaaaa;
+      font-size: 13px;
+    }
+
+    .live {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    /* =========================
+       ERROR
+    ========================= */
+
+    #error {
+      margin-bottom: 18px;
+    }
+
+    .error-box {
+      background: #251010;
+      border: 1px solid #5c2525;
+      color: #ff9b9b;
+      border-radius: 9px;
+      padding: 15px;
+      font-size: 13px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--panel2);
+
+      color: #999999;
+
+      padding: 15px;
+
+      text-align: left;
+
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 16px 15px;
+
+      font-size: 13px;
+
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: #161616;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .order-id {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .customer {
+      color: #dddddd;
+    }
+
+    .money {
+      font-weight: 700;
+    }
+
+    .status-pending {
+      display: inline-block;
+
+      color: var(--gold);
+
+      background: rgba(245, 197, 66, 0.08);
+
+      border: 1px solid rgba(245, 197, 66, 0.2);
+
+      padding: 5px 9px;
+
+      border-radius: 5px;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 55px 20px;
+      color: #666666;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+      text-align: center;
+
+      color: #555555;
+
+      font-size: 11px;
+
+      margin-top: 22px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        padding: 14px;
+      }
 
       header {
         align-items: flex-start;
@@ -5,11 +302,29 @@
       }
 
       .logo {
-        font-size: 22px;
+        font-size: 24px;
+        letter-spacing: 4px;
+      }
+
+      .subtitle {
+        font-size: 10px;
       }
 
       .stats {
         grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        padding: 18px;
+      }
+
+      .stat-value {
+        font-size: 26px;
+      }
+
+      .status-row {
+        align-items: flex-start;
+        gap: 10px;
       }
     }
   </style>
@@ -19,183 +334,247 @@
 
   <div class="container">
 
+    <!-- =========================
+         HEADER
+    ========================== -->
+
     <header>
-      <div>
-        <div class="logo">RAVAN</div>
-        <div class="subtitle">ADMIN DASHBOARD</div>
+
+      <div class="brand">
+
+        <div class="logo">
+          RAVAN
+        </div>
+
+        <div class="subtitle">
+          ADMIN DASHBOARD
+        </div>
+
       </div>
 
-      <button onclick="loadOrders()">Refresh</button>
+      <div class="header-actions">
+
+        <button
+          class="refresh-btn"
+          onclick="loadOrders()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
     </header>
+
+
+    <!-- =========================
+         ERROR
+    ========================== -->
 
     <div id="error"></div>
 
+
+    <!-- =========================
+         STATS
+    ========================== -->
+
     <div class="stats">
 
-      <div class="stat">
-        <div class="stat-label">TOTAL ORDERS</div>
-        <div class="stat-value" id="totalOrders">0</div>
+      <div class="stat-card">
+
+        <div class="stat-label">
+          TOTAL ORDERS
+        </div>
+
+        <div
+          class="stat-value"
+          id="totalOrders"
+        >
+          0
+        </div>
+
       </div>
 
-      <div class="stat">
-        <div class="stat-label">PENDING ORDERS</div>
-        <div class="stat-value" id="pendingOrders">0</div>
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          PENDING ORDERS
+        </div>
+
+        <div
+          class="stat-value"
+          id="pendingOrders"
+        >
+          0
+        </div>
+
       </div>
 
-      <div class="stat">
-        <div class="stat-label">TOTAL SALES</div>
-        <div class="stat-value" id="totalSales">₹0</div>
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          TOTAL SALES
+        </div>
+
+        <div
+          class="stat-value"
+          id="totalSales"
+        >
+          ₹0
+        </div>
+
       </div>
 
     </div>
 
-    <div class="status" id="status">
-      Loading orders...
+
+    <!-- =========================
+         STATUS
+    ========================== -->
+
+    <div class="status-row">
+
+      <div
+        class="status"
+        id="status"
+      >
+        Loading orders...
+      </div>
+
+      <div class="live">
+
+        <span class="live-dot"></span>
+
+        DATABASE LIVE
+
+      </div>
+
     </div>
+
+
+    <!-- =========================
+         ORDERS TABLE
+    ========================== -->
 
     <div class="table-wrap">
 
       <table>
 
         <thead>
+
           <tr>
-            <th>Order ID</th>
-            <th>Customer Email</th>
-            <th>Subtotal</th>
-            <th>Shipping</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Date</th>
+
+            <th>
+              Order ID
+            </th>
+
+            <th>
+              Customer Email
+            </th>
+
+            <th>
+              Subtotal
+            </th>
+
+            <th>
+              Shipping
+            </th>
+
+            <th>
+              Total
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Date
+            </th>
+
           </tr>
+
         </thead>
 
+
         <tbody id="ordersTable">
+
         </tbody>
 
       </table>
 
     </div>
 
+
+    <div class="footer">
+      RAVAN • WEAR YOUR POWER
+    </div>
+
   </div>
+
 
   <script>
 
     async function loadOrders() {
 
-      const status = document.getElementById("status");
-      const table = document.getElementById("ordersTable");
-      const error = document.getElementById("error");
+      const status =
+        document.getElementById("status");
+
+      const table =
+        document.getElementById("ordersTable");
+
+      const error =
+        document.getElementById("error");
+
 
       error.innerHTML = "";
-      status.textContent = "Loading orders...";
+
+      status.textContent =
+        "Loading orders...";
+
       table.innerHTML = "";
+
 
       try {
 
-        const response = await fetch("/api/admin/orders", {
-          method: "GET",
-          credentials: "include"
-        });
+        const response =
+          await fetch(
+            "/api/admin/orders",
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
 
         if (!response.ok) {
-          throw new Error("Unable to load admin orders. HTTP " + response.status);
+
+          throw new Error(
+            "Unable to load admin orders. HTTP " +
+            response.status
+          );
+
         }
 
-        const data = await response.json();
+
+        const data =
+          await response.json();
+
 
         if (!data.ok) {
-          throw new Error(data.error || "Unknown error");
+
+          throw new Error(
+            data.error ||
+            "Unknown server error"
+          );
+
         }
 
-        const orders = data.orders || [];
 
-        document.getElementById("totalOrders").textContent =
-          orders.length;
+        const orders =
+          data.orders || [];
 
-        const pending = orders.filter(
-          order => order.status === "Pending Payment"
-        ).length;
 
-        document.getElementById("pendingOrders").textContent =
-          pending;
-
-        const sales = orders.reduce(
-          (sum, order) => sum + Number(order.total || 0),
-          0
-        );
-
-        document.getElementById("totalSales").textContent =
-          "₹" + sales.toLocaleString("en-IN");
-
-        if (orders.length === 0) {
-
-          table.innerHTML = `
-            <tr>
-              <td colspan="7" class="empty">
-                No orders found.
-              </td>
-            </tr>
-          `;
-
-          status.textContent = "No orders yet.";
-          return;
-        }
-
-        orders.forEach(order => {
-
-          const row = document.createElement("tr");
-
-          const date = order.created_at
-            ? new Date(order.created_at).toLocaleString("en-IN")
-            : "-";
-
-          row.innerHTML = `
-            <td class="order-id">${escapeHtml(order.id)}</td>
-            <td>${escapeHtml(order.customer_email)}</td>
-            <td>₹${Number(order.subtotal || 0).toLocaleString("en-IN")}</td>
-            <td>₹${Number(order.shipping || 0).toLocaleString("en-IN")}</td>
-            <td>₹${Number(order.total || 0).toLocaleString("en-IN")}</td>
-            <td class="pending">${escapeHtml(order.status)}</td>
-            <td>${escapeHtml(date)}</td>
-          `;
-
-          table.appendChild(row);
-
-        });
-
-        status.textContent =
-          `${orders.length} order(s) loaded successfully.`;
-
-      } catch (err) {
-
-        console.error(err);
-
-        status.textContent = "Failed to load orders.";
-
-        error.innerHTML = `
-          <div class="error">
-            ${escapeHtml(err.message)}
-          </div>
-        `;
-
-      }
-
-    }
-
-    function escapeHtml(value) {
-
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-    loadOrders();
-
-  </script>
-
-</body>
-  </html>
+        /*
