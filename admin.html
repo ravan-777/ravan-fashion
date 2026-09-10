@@ -2,529 +2,487 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAVAN — Admin Dashboard</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAVAN Admin</title>
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --bg: #070707;
-  --panel: #111111;
-  --panel2: #151515;
-  --border: #292929;
-  --text: #ffffff;
-  --muted: #888888;
-  --gold: #c5c542;
-  --green: #4ade80;
-  --red: #ff6b6b;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 24px;
-}
-
-.container {
-  width: 100%;
-  max-width: 1250px;
-  margin: 0 auto;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 22px;
-  margin-bottom: 28px;
-  border-bottom: 1px solid var(--border);
-}
-
-.brand {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.logo {
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 5px;
-}
-
-.subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 2px;
-}
-
-button {
-  border: 0;
-  background: white;
-  color: black;
-  padding: 11px 18px;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: .85;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-bottom: 22px;
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid #1e1e1e;
-  border-radius: 10px;
-  padding: 22px;
-}
-
-.card-label {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-
-.card-value {
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  min-height: 24px;
-}
-
-.status {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.database {
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.database.offline {
-  color: var(--red);
-}
-
-.error-box {
-  display: none;
-  background: rgba(255,107,107,.08);
-  border: 1px solid rgba(255,107,107,.3);
-  color: var(--red);
-  padding: 14px;
-  border-radius: 8px;
-  margin-bottom: 18px;
-  font-size: 13px;
-}
-
-.table-wrap {
-  background: var(--panel);
-  border: 1px solid #1e1e1e;
-  border-radius: 10px;
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 850px;
-}
-
-thead {
-  background: var(--panel2);
-}
-
-th {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 1px;
-  text-align: left;
-  padding: 15px;
-  white-space: nowrap;
-}
-
-td {
-  padding: 15px;
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-.order-id {
-  font-weight: 700;
-}
-
-.customer {
-  color: #dddddd;
-}
-
-.money {
-  font-variant-numeric: tabular-nums;
-}
-
-.status-pending {
-  display: inline-block;
-  color: #facc15;
-  background: rgba(250,204,21,.08);
-  border: 1px solid rgba(250,204,21,.2);
-  padding: 5px 9px;
-  border-radius: 20px;
-  font-size: 11px;
-}
-
-.empty {
-  text-align: center;
-  color: var(--muted);
-  padding: 35px;
-}
-
-footer {
-  text-align: center;
-  color: #444;
-  font-size: 9px;
-  letter-spacing: 1px;
-  margin-top: 22px;
-  padding-bottom: 20px;
-}
-
-@media (max-width: 700px) {
-  body {
-    padding: 16px;
-  }
-
-  header {
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .card {
-    padding: 18px;
-  }
-
-  .card-value {
-    font-size: 24px;
-  }
-
-  .logo {
-    font-size: 25px;
-  }
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif}
+header{padding:22px 18px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:24px;letter-spacing:2px}
+button{background:#fff;color:#000;border:0;border-radius:7px;padding:10px 15px;font-weight:bold;cursor:pointer}
+button.danger{background:#d33;color:#fff}
+button.secondary{background:#222;color:#fff}
+main{max-width:1200px;margin:auto;padding:20px}
+.status{padding:12px;border-radius:8px;background:#111;margin-bottom:18px}
+.live{color:#5fdb7a}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:25px}
+.card{background:#111;border:1px solid #242424;border-radius:10px;padding:18px}
+.card small{color:#888}
+.card strong{display:block;font-size:28px;margin-top:8px}
+.section{background:#0f0f0f;border:1px solid #242424;border-radius:10px;padding:18px;margin-bottom:22px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.section h2{margin:0;font-size:19px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:11px;border-bottom:1px solid #222;text-align:left;font-size:13px}
+th{color:#999}
+.badge{padding:5px 8px;border-radius:20px;background:#222;font-size:11px}
+.form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+label{font-size:12px;color:#aaa}
+input,textarea,select{width:100%;margin-top:5px;background:#171717;color:#fff;border:1px solid #333;border-radius:7px;padding:11px}
+textarea{min-height:80px;resize:vertical}
+.full{grid-column:1/-1}
+.checks{display:flex;gap:20px;align-items:center}
+.checks label{display:flex;gap:7px;align-items:center}
+.checks input{width:auto;margin:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+#productForm{display:none}
+@media(max-width:700px){
+ .grid{grid-template-columns:1fr}
+ .form{grid-template-columns:1fr}
+ main{padding:12px}
+ header{padding:16px 12px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <header>
-  <div class="brand">
-    <div class="logo">RAVAN</div>
-    <div class="subtitle">ADMIN DASHBOARD</div>
-  </div>
-
-  <button id="refreshButton" type="button">
-    Refresh
-  </button>
+  <h1>RAVAN ADMIN</h1>
+  <button onclick="loadAll()">Refresh</button>
 </header>
 
-<section class="stats">
+<main>
 
+<div class="status">
+  <span class="live">● DATABASE LIVE</span>
+  <span id="statusText"> Loading...</span>
+</div>
+
+<div class="grid">
   <div class="card">
-    <div class="card-label">TOTAL ORDERS</div>
-    <div class="card-value" id="totalOrders">0</div>
+    <small>TOTAL ORDERS</small>
+    <strong id="totalOrders">0</strong>
   </div>
-
   <div class="card">
-    <div class="card-label">PENDING ORDERS</div>
-    <div class="card-value" id="pendingOrders">0</div>
+    <small>PENDING ORDERS</small>
+    <strong id="pendingOrders">0</strong>
   </div>
-
   <div class="card">
-    <div class="card-label">TOTAL SALES</div>
-    <div class="card-value" id="totalSales">₹0</div>
-  </div>
-
-</section>
-
-<div class="status-row">
-  <div class="status" id="status">
-    Loading orders...
-  </div>
-
-  <div class="database" id="databaseStatus">
-    ● DATABASE LIVE
+    <small>TOTAL SALES</small>
+    <strong id="totalSales">₹0</strong>
   </div>
 </div>
 
-<div class="error-box" id="error"></div>
+<!-- ORDERS -->
 
-<div class="table-wrap">
+<div class="section">
+  <div class="section-head">
+    <h2>Orders</h2>
+    <button class="secondary" onclick="loadOrders()">Refresh Orders</button>
+  </div>
 
-<table>
-
-<thead>
-<tr>
-  <th>ORDER ID</th>
-  <th>CUSTOMER EMAIL</th>
-  <th>SUBTOTAL</th>
-  <th>SHIPPING</th>
-  <th>TOTAL</th>
-  <th>STATUS</th>
-  <th>DATE</th>
-</tr>
-</thead>
-
-<tbody id="ordersTable">
-</tbody>
-
-</table>
-
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Email</th>
+          <th>Subtotal</th>
+          <th>Shipping</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody">
+        <tr><td colspan="7">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<footer>
-  RAVAN · WEAR YOUR POWER
-</footer>
+<!-- PRODUCT MANAGEMENT -->
 
+<div class="section">
+  <div class="section-head">
+    <h2>Product Management</h2>
+    <button onclick="showAdd()">+ Add Product</button>
+  </div>
+
+  <div id="productForm">
+    <div class="form">
+
+      <div>
+        <label>Product Name</label>
+        <input id="pName" placeholder="Product name">
+      </div>
+
+      <div>
+        <label>Brand</label>
+        <input id="pBrand" placeholder="Brand">
+      </div>
+
+      <div>
+        <label>Category</label>
+        <select id="pCategory">
+          <option value="men">Men</option>
+          <option value="women">Women</option>
+          <option value="unisex">Unisex</option>
+          <option value="accessories">Accessories</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Seller / Partner</label>
+        <input id="pSeller" placeholder="Seller or partner">
+      </div>
+
+      <div>
+        <label>Price ₹</label>
+        <input id="pPrice" type="number" min="0" placeholder="1499">
+      </div>
+
+      <div>
+        <label>Old Price ₹</label>
+        <input id="pOldPrice" type="number" min="0" placeholder="1999">
+      </div>
+
+      <div>
+        <label>Stock</label>
+        <input id="pStock" type="number" min="0" value="0">
+      </div>
+
+      <div>
+        <label>Tag</label>
+        <input id="pTag" placeholder="NEW / SALE / BESTSELLER">
+      </div>
+
+      <div class="full">
+        <label>Description</label>
+        <textarea id="pDescription" placeholder="Product description"></textarea>
+      </div>
+
+      <div class="full">
+        <label>Image URL</label>
+        <input id="pImage" placeholder="https://...">
+      </div>
+
+      <div>
+        <label>Original Product URL</label>
+        <input id="pProductUrl" placeholder="https://...">
+      </div>
+
+      <div>
+        <label>Affiliate URL</label>
+        <input id="pAffiliate" placeholder="https://...">
+      </div>
+
+      <div class="full checks">
+        <label>
+          <input id="pFeatured" type="checkbox">
+          Featured
+        </label>
+
+        <label>
+          <input id="pActive" type="checkbox" checked>
+          Active
+        </label>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button onclick="saveProduct()">Save Product</button>
+      <button class="secondary" onclick="hideForm()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Brand</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productsBody">
+        <tr><td colspan="7">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+</main>
 
 <script>
-async function loadOrders() {
+let editingId=null;
 
-  const status =
-    document.getElementById("status");
+const $=id=>document.getElementById(id);
 
-  const table =
-    document.getElementById("ordersTable");
+function money(n){
+  return '₹'+Number(n||0).toLocaleString('en-IN');
+}
 
-  const error =
-    document.getElementById("error");
+function esc(v){
+  return String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  }[m]));
+}
 
-  const databaseStatus =
-    document.getElementById("databaseStatus");
+async function api(url,options={}){
+  options.credentials='include';
+  options.cache='no-store';
+  options.headers={
+    'Accept':'application/json',
+    ...(options.body?{'Content-Type':'application/json'}:{}),
+    ...(options.headers||{})
+  };
 
-  error.style.display = "none";
-  error.textContent = "";
+  const r=await fetch(url,options);
+  const text=await r.text();
 
-  status.textContent = "Loading orders...";
-  table.innerHTML = "";
+  let data;
+  try{data=JSON.parse(text)}
+  catch{throw new Error('Server returned invalid response')}
 
-  try {
+  if(!r.ok||data.ok===false){
+    throw new Error(data.error||'Request failed');
+  }
 
-    const response = await fetch(
-      "/api/admin/orders",
-      {
-        method: "GET",
-        credentials: "include",
-        cache: "no-store",
-        headers: {
-          "Accept": "application/json"
-        }
-      }
-    );
+  return data;
+}
 
-    const contentType =
-      response.headers.get("content-type") || "";
+async function loadOrders(){
+  try{
+    const data=await api('/api/admin/orders');
+    const orders=data.orders||[];
 
-    if (!response.ok) {
-      throw new Error(
-        "Unable to load admin orders. HTTP " +
-        response.status
-      );
-    }
-
-    if (!contentType.includes("application/json")) {
-      throw new Error(
-        "Admin authentication response was not JSON."
-      );
-    }
-
-    const data =
-      await response.json();
-
-    if (!data.ok) {
-      throw new Error(
-        data.error || "Unknown server error"
-      );
-    }
-
-    const orders =
-      Array.isArray(data.orders)
-        ? data.orders
-        : [];
-
-    databaseStatus.textContent =
-      "● DATABASE LIVE";
-
-    databaseStatus.classList.remove(
-      "offline"
-    );
-
-    document.getElementById(
-      "totalOrders"
-    ).textContent = orders.length;
-
-    const pending =
-      orders.filter(
-        order =>
-          order.status === "Pending Payment"
+    $('totalOrders').textContent=orders.length;
+    $('pendingOrders').textContent=
+      orders.filter(x=>
+        String(x.status).toLowerCase().includes('pending')
       ).length;
 
-    document.getElementById(
-      "pendingOrders"
-    ).textContent = pending;
-
-    const sales =
-      orders.reduce(
-        (sum, order) =>
-          sum + Number(order.total || 0),
-        0
-      );
-
-    document.getElementById(
-      "totalSales"
-    ).textContent =
-      "₹" +
-      sales.toLocaleString("en-IN");
-
-    if (orders.length === 0) {
-
-      table.innerHTML =
-        '<tr>' +
-        '<td colspan="7" class="empty">' +
-        'No orders found.' +
-        '</td>' +
-        '</tr>';
-
-      status.textContent =
-        "No orders yet.";
-
-      return;
-    }
-
-    orders.forEach(order => {
-
-      const row =
-        document.createElement("tr");
-
-      const date =
-        order.created_at
-          ? new Date(
-              order.created_at
-            ).toLocaleString("en-IN")
-          : "-";
-
-      row.innerHTML = `
-        <td class="order-id">
-          ${escapeHtml(order.id)}
-        </td>
-
-        <td class="customer">
-          ${escapeHtml(order.customer_email)}
-        </td>
-
-        <td class="money">
-          ₹${Number(
-            order.subtotal || 0
-          ).toLocaleString("en-IN")}
-        </td>
-
-        <td class="money">
-          ₹${Number(
-            order.shipping || 0
-          ).toLocaleString("en-IN")}
-        </td>
-
-        <td class="money">
-          ₹${Number(
-            order.total || 0
-          ).toLocaleString("en-IN")}
-        </td>
-
-        <td>
-          <span class="status-pending">
-            ${escapeHtml(order.status)}
-          </span>
-        </td>
-
-        <td>
-          ${escapeHtml(date)}
-        </td>
-      `;
-
-      table.appendChild(row);
-    });
-
-    status.textContent =
-      orders.length +
-      " order(s) loaded successfully.";
-
-  } catch (err) {
-
-    console.error(err);
-
-    databaseStatus.textContent =
-      "● DATABASE ERROR";
-
-    databaseStatus.classList.add(
-      "offline"
+    $('totalSales').textContent=money(
+      orders.reduce((sum,x)=>sum+Number(x.total||0),0)
     );
 
-    status.textContent =
-      "Failed to load orders.";
+    $('ordersBody').innerHTML=orders.length
+      ?orders.map(o=>`
+        <tr>
+          <td><b>${esc(o.id)}</b></td>
+          <td>${esc(o.customer_email)}</td>
+          <td>${money(o.subtotal)}</td>
+          <td>${money(o.shipping)}</td>
+          <td>${money(o.total)}</td>
+          <td><span class="badge">${esc(o.status)}</span></td>
+          <td>${new Date(o.created_at).toLocaleString('en-IN')}</td>
+        </tr>
+      `).join('')
+      :'<tr><td colspan="7">No orders found.</td></tr>';
 
-    error.textContent =
-      err.message || "Unknown error";
-
-    error.style.display = "block";
+    $('statusText').textContent=
+      ' '+orders.length+' order(s) loaded successfully.';
+  }catch(e){
+    $('ordersBody').innerHTML=
+      `<tr><td colspan="7">${esc(e.message)}</td></tr>`;
+    $('statusText').textContent=' '+e.message;
   }
 }
 
-function escapeHtml(value) {
+async function loadProducts(){
+  try{
+    const data=await api('/api/admin/products');
+    const products=data.products||[];
 
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    $('productsBody').innerHTML=products.length
+      ?products.map(p=>`
+        <tr>
+          <td><b>${esc(p.name)}</b></td>
+          <td>${esc(p.brand)}</td>
+          <td>${esc(p.category)}</td>
+          <td>${money(p.price)}</td>
+          <td>${Number(p.stock||0)}</td>
+          <td>
+            <span class="badge">
+              ${Number(p.active)?'ACTIVE':'INACTIVE'}
+            </span>
+          </td>
+          <td>
+            <div class="actions">
+              <button
+                class="secondary"
+                onclick='editProduct(${JSON.stringify(p)})'>
+                Edit
+              </button>
+              ${
+                Number(p.active)
+                ?`<button class="danger" onclick="deactivateProduct('${esc(p.id)}')">Deactivate</button>`
+                :`<button onclick="activateProduct('${esc(p.id)}')">Activate</button>`
+              }
+            </div>
+          </td>
+        </tr>
+      `).join('')
+      :'<tr><td colspan="7">No products found.</td></tr>';
+
+  }catch(e){
+    $('productsBody').innerHTML=
+      `<tr><td colspan="7">${esc(e.message)}</td></tr>`;
+  }
 }
 
-document
-  .getElementById("refreshButton")
-  .addEventListener(
-    "click",
-    loadOrders
-  );
+function showAdd(){
+  editingId=null;
+  clearForm();
+  $('productForm').style.display='block';
+  window.scrollTo({top:$('productForm').offsetTop-20,behavior:'smooth'});
+}
 
-loadOrders();
+function hideForm(){
+  $('productForm').style.display='none';
+  editingId=null;
+}
+
+function clearForm(){
+  $('pName').value='';
+  $('pBrand').value='';
+  $('pCategory').value='unisex';
+  $('pSeller').value='';
+  $('pPrice').value='';
+  $('pOldPrice').value='';
+  $('pStock').value='0';
+  $('pTag').value='';
+  $('pDescription').value='';
+  $('pImage').value='';
+  $('pProductUrl').value='';
+  $('pAffiliate').value='';
+  $('pFeatured').checked=false;
+  $('pActive').checked=true;
+}
+
+function editProduct(p){
+  editingId=String(p.id);
+
+  $('pName').value=p.name||'';
+  $('pBrand').value=p.brand||'';
+  $('pCategory').value=p.category||'unisex';
+  $('pSeller').value=p.seller||'';
+  $('pPrice').value=p.price??'';
+  $('pOldPrice').value=p.old_price??'';
+  $('pStock').value=p.stock??0;
+  $('pTag').value=p.tag||'';
+  $('pDescription').value=p.description||'';
+  $('pImage').value=p.image_url||'';
+  $('pProductUrl').value=p.product_url||'';
+  $('pAffiliate').value=p.affiliate_url||'';
+  $('pFeatured').checked=Number(p.featured)===1;
+  $('pActive').checked=Number(p.active)===1;
+
+  $('productForm').style.display='block';
+  window.scrollTo({top:$('productForm').offsetTop-20,behavior:'smooth'});
+}
+
+function formData(){
+  return {
+    name:$('pName').value.trim(),
+    brand:$('pBrand').value.trim(),
+    category:$('pCategory').value,
+    seller:$('pSeller').value.trim(),
+    price:Number($('pPrice').value||0),
+    old_price:$('pOldPrice').value===''?null:Number($('pOldPrice').value),
+    stock:Number($('pStock').value||0),
+    tag:$('pTag').value.trim(),
+    description:$('pDescription').value.trim(),
+    image_url:$('pImage').value.trim(),
+    product_url:$('pProductUrl').value.trim(),
+    affiliate_url:$('pAffiliate').value.trim(),
+    featured:$('pFeatured').checked,
+    active:$('pActive').checked
+  };
+}
+
+async function saveProduct(){
+  const data=formData();
+
+  if(!data.name){
+    alert('Product name is required');
+    return;
+  }
+
+  if(data.price<0||data.stock<0){
+    alert('Price and stock cannot be negative');
+    return;
+  }
+
+  try{
+    if(editingId){
+      await api('/api/admin/products/'+encodeURIComponent(editingId),{
+        method:'PUT',
+        body:JSON.stringify(data)
+      });
+      alert('Product updated successfully');
+    }else{
+      await api('/api/admin/products',{
+        method:'POST',
+        body:JSON.stringify(data)
+      });
+      alert('Product created successfully');
+    }
+
+    hideForm();
+    await loadProducts();
+
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function deactivateProduct(id){
+  if(!confirm('Deactivate this product?'))return;
+
+  try{
+    await api('/api/admin/products/'+encodeURIComponent(id),{
+      method:'DELETE'
+    });
+    await loadProducts();
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function activateProduct(id){
+  try{
+    await api('/api/admin/products/'+encodeURIComponent(id),{
+      method:'PUT',
+      body:JSON.stringify({active:true})
+    });
+    await loadProducts();
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function loadAll(){
+  await Promise.all([
+    loadOrders(),
+    loadProducts()
+  ]);
+}
+
+loadAll();
 </script>
 
 </body>
-      </html>
+  </html>
