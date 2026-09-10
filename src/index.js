@@ -26,6 +26,7 @@ const json = (data, status = 200) =>
 
 function orderId() {
   const bytes = crypto.getRandomValues(new Uint8Array(4));
+
   return 'RAVAN-' + [...bytes]
     .map(x => x.toString(16).padStart(2, '0'))
     .join('')
@@ -34,27 +35,40 @@ function orderId() {
 
 export default {
   async fetch(request, env) {
+
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Health check
+    // =====================================================
+    // HEALTH CHECK
+    // =====================================================
+
     if (path === '/api/health' && request.method === 'GET') {
+
       return json({
         ok: true,
         service: 'ravan-api',
         database: !!env.DB,
         time: new Date().toISOString()
       });
+
     }
 
-    // Product list
+
+    // =====================================================
+    // PRODUCT LIST
+    // =====================================================
+
     if (path === '/api/products' && request.method === 'GET') {
+
       if (!env.DB) {
+
         return json({
           ok: true,
           source: 'catalog-fallback',
           products: CATALOG
         });
+
       }
 
       const { results } = await env.DB.prepare(
@@ -66,13 +80,20 @@ export default {
         source: 'd1',
         products: results
       });
+
     }
 
-    // Single product
+
+    // =====================================================
+    // SINGLE PRODUCT
+    // =====================================================
+
     if (path.startsWith('/api/products/') && request.method === 'GET') {
+
       const id = path.split('/').pop();
 
       if (!env.DB) {
+
         const product = CATALOG.find(p => p.id === id);
 
         return product
@@ -85,6 +106,7 @@ export default {
               ok: false,
               error: 'Product not found'
             }, 404);
+
       }
 
       const product = await env.DB.prepare(
@@ -101,30 +123,44 @@ export default {
             ok: false,
             error: 'Product not found'
           }, 404);
+
     }
 
-    // Create order
+
+    // =====================================================
+    // CREATE ORDER
+    // =====================================================
+
     if (path === '/api/orders' && request.method === 'POST') {
+
       if (!env.DB) {
+
         return json({
           ok: false,
           error: 'D1 database is not connected yet'
         }, 503);
+
       }
 
       let body;
 
       try {
+
         body = await request.json();
+
       } catch {
+
         return json({
           ok: false,
           error: 'Invalid JSON'
         }, 400);
+
       }
 
       const c = body.customer || {};
-      const items = Array.isArray(body.items) ? body.items : [];
+      const items = Array.isArray(body.items)
+        ? body.items
+        : [];
 
       if (
         !c.name ||
@@ -136,20 +172,29 @@ export default {
         !c.state ||
         !items.length
       ) {
+
         return json({
           ok: false,
           error: 'Missing required order information'
         }, 400);
+
       }
 
-      const ids = [...new Set(
-        items.map(x => String(x.id))
-      )];
+      const ids = [
+        ...new Set(
+          items.map(x => String(x.id))
+        )
+      ];
 
-      const placeholders = ids.map(() => '?').join(',');
+      const placeholders = ids
+        .map(() => '?')
+        .join(',');
 
       const { results } = await env.DB.prepare(
-        `SELECT id,name,price FROM products WHERE active=1 AND id IN (${placeholders})`
+        `SELECT id,name,price
+         FROM products
+         WHERE active=1
+         AND id IN (${placeholders})`
       ).bind(...ids).all();
 
       const byId = Object.fromEntries(
@@ -157,20 +202,28 @@ export default {
       );
 
       let subtotal = 0;
+
       const normalized = [];
 
       for (const item of items) {
+
         const p = byId[String(item.id)];
+
         const qty = Math.max(
           1,
-          Math.min(99, Number(item.qty) || 1)
+          Math.min(
+            99,
+            Number(item.qty) || 1
+          )
         );
 
         if (!p) {
+
           return json({
             ok: false,
             error: `Product ${item.id} is unavailable`
           }, 400);
+
         }
 
         subtotal += Number(p.price) * qty;
@@ -183,18 +236,29 @@ export default {
           quantity: qty,
           unitPrice: Number(p.price)
         });
+
       }
 
-      const shipping = subtotal >= 2999 ? 0 : 199;
+      const shipping = subtotal >= 2999
+        ? 0
+        : 199;
+
       const total = subtotal + shipping;
 
       const id = orderId();
+
       const now = new Date().toISOString();
+
+
+      // =================================================
+      // CUSTOMER
+      // =================================================
 
       await env.DB.prepare(`
         INSERT INTO customers
         (name,phone,email,address,city,pin,state,landmark,created_at,updated_at)
         VALUES (?,?,?,?,?,?,?,?,?,?)
+
         ON CONFLICT(email) DO UPDATE SET
           name=excluded.name,
           phone=excluded.phone,
@@ -219,6 +283,11 @@ export default {
         )
         .run();
 
+
+      // =================================================
+      // ORDER
+      // =================================================
+
       await env.DB.prepare(`
         INSERT INTO orders
         (id,customer_email,subtotal,shipping,total,status,created_at)
@@ -235,7 +304,13 @@ export default {
         )
         .run();
 
+
+      // =================================================
+      // ORDER ITEMS
+      // =================================================
+
       for (const x of normalized) {
+
         await env.DB.prepare(`
           INSERT INTO order_items
           (order_id,product_id,product_name,size,color,quantity,unit_price)
@@ -251,10 +326,14 @@ export default {
             x.unitPrice
           )
           .run();
+
       }
 
+
       return json({
+
         ok: true,
+
         order: {
           id,
           subtotal,
@@ -263,27 +342,202 @@ export default {
           status: 'Pending Payment',
           createdAt: now
         }
+
       }, 201);
+
     }
 
-    // ADMIN ONLY - order list
-    // Protect /api/admin/* with Cloudflare Access
-    if (path === '/api/admin/orders' && request.method === 'GET') {
+
+    // =====================================================
+    // ADMIN - SINGLE ORDER DETAILS
+    // =====================================================
+
+    if (
+      path.startsWith('/api/admin/orders/') &&
+      request.method === 'GET'
+    ) {
+
       if (!env.DB) {
+
         return json({
           ok: false,
           error: 'D1 database is not connected yet'
         }, 503);
+
+      }
+
+      const id = path.split('/').pop();
+
+
+      // ---------------------------------------------------
+      // GET ORDER + CUSTOMER INFORMATION
+      // ---------------------------------------------------
+
+      const order = await env.DB.prepare(`
+        SELECT
+          o.id,
+          o.customer_email,
+          o.subtotal,
+          o.shipping,
+          o.total,
+          o.status,
+          o.created_at,
+
+          c.name,
+          c.phone,
+          c.address,
+          c.city,
+          c.pin,
+          c.state,
+          c.landmark
+
+        FROM orders o
+
+        LEFT JOIN customers c
+          ON c.email = o.customer_email
+
+        WHERE o.id = ?
+      `)
+        .bind(id)
+        .first();
+
+
+      if (!order) {
+
+        return json({
+          ok: false,
+          error: 'Order not found'
+        }, 404);
+
+      }
+
+
+      // ---------------------------------------------------
+      // GET ORDER ITEMS
+      // ---------------------------------------------------
+
+      const { results: items } =
+        await env.DB.prepare(`
+          SELECT
+            product_id,
+            product_name,
+            size,
+            color,
+            quantity,
+            unit_price
+
+          FROM order_items
+
+          WHERE order_id = ?
+        `)
+          .bind(id)
+          .all();
+
+
+      // ---------------------------------------------------
+      // RETURN COMPLETE ORDER
+      // ---------------------------------------------------
+
+      return json({
+
+        ok: true,
+
+        order: {
+
+          id: order.id,
+
+          customer: {
+            name: order.name,
+            phone: order.phone,
+            email: order.customer_email,
+            address: order.address,
+            city: order.city,
+            pin: order.pin,
+            state: order.state,
+            landmark: order.landmark
+          },
+
+          items,
+
+          subtotal: order.subtotal,
+          shipping: order.shipping,
+          total: order.total,
+
+          status: order.status,
+
+          created_at: order.created_at
+
+        }
+
+      });
+
+    }
+
+
+    // =====================================================
+    // ADMIN - ORDER LIST
+    // =====================================================
+
+    if (
+      path === '/api/admin/orders' &&
+      request.method === 'GET'
+    ) {
+
+      if (!env.DB) {
+
+        return json({
+          ok: false,
+          error: 'D1 database is not connected yet'
+        }, 503);
+
       }
 
       const { results } = await env.DB.prepare(
-        'SELECT id,customer_email,subtotal,shipping,total,status,created_at FROM orders ORDER BY created_at DESC LIMIT 100'
+        `SELECT
+          id,
+          customer_email,
+          subtotal,
+          shipping,
+          total,
+          status,
+          created_at
+
+         FROM orders
+
+         ORDER BY created_at DESC
+
+         LIMIT 100`
       ).all();
 
       return json({
         ok: true,
         orders: results
       });
+
     }
+
+
+    // =====================================================
+    // UNKNOWN API ROUTE
+    // =====================================================
+
+    if (path.startsWith('/api/')) {
+
+      return json({
+        ok: false,
+        error: 'API route not found'
+      }, 404);
+
+    }
+
+
+    // =====================================================
+    // DEFAULT
+    // =====================================================
+
+    return new Response('Not Found', {
+      status: 404
+    });
+
   }
 };
