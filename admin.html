@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RAVAN Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+
+    .subtitle {
+      color: #999;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: #151515;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .status {
+      margin-bottom: 20px;
+      color: #aaa;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th,
+    td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #292929;
+    }
+
+    th {
+      background: #181818;
+      color: #aaa;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .order-id {
+      font-weight: 700;
+    }
+
+    .pending {
+      color: #f5c542;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 50px;
+      color: #777;
+    }
+
+    .error {
+      background: #2a1111;
+      border: 1px solid #632020;
+      color: #ff8c8c;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      header {
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .logo {
+        font-size: 22px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+      <div>
+        <div class="logo">RAVAN</div>
+        <div class="subtitle">ADMIN DASHBOARD</div>
+      </div>
+
+      <button onclick="loadOrders()">Refresh</button>
+    </header>
+
+    <div id="error"></div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-label">TOTAL ORDERS</div>
+        <div class="stat-value" id="totalOrders">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">PENDING ORDERS</div>
+        <div class="stat-value" id="pendingOrders">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">TOTAL SALES</div>
+        <div class="stat-value" id="totalSales">₹0</div>
+      </div>
+
+    </div>
+
+    <div class="status" id="status">
+      Loading orders...
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer Email</th>
+            <th>Subtotal</th>
+            <th>Shipping</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody id="ordersTable">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    async function loadOrders() {
+
+      const status = document.getElementById("status");
+      const table = document.getElementById("ordersTable");
+      const error = document.getElementById("error");
+
+      error.innerHTML = "";
+      status.textContent = "Loading orders...";
+      table.innerHTML = "";
+
+      try {
+
+        const response = await fetch("/api/admin/orders", {
+          method: "GET",
+          credentials: "include"
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to load admin orders. HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || "Unknown error");
+        }
+
+        const orders = data.orders || [];
+
+        document.getElementById("totalOrders").textContent =
+          orders.length;
+
+        const pending = orders.filter(
+          order => order.status === "Pending Payment"
+        ).length;
+
+        document.getElementById("pendingOrders").textContent =
+          pending;
+
+        const sales = orders.reduce(
+          (sum, order) => sum + Number(order.total || 0),
+          0
+        );
+
+        document.getElementById("totalSales").textContent =
+          "₹" + sales.toLocaleString("en-IN");
+
+        if (orders.length === 0) {
+
+          table.innerHTML = `
+            <tr>
+              <td colspan="7" class="empty">
+                No orders found.
+              </td>
+            </tr>
+          `;
+
+          status.textContent = "No orders yet.";
+          return;
+        }
+
+        orders.forEach(order => {
+
+          const row = document.createElement("tr");
+
+          const date = order.created_at
+            ? new Date(order.created_at).toLocaleString("en-IN")
+            : "-";
+
+          row.innerHTML = `
+            <td class="order-id">${escapeHtml(order.id)}</td>
+            <td>${escapeHtml(order.customer_email)}</td>
+            <td>₹${Number(order.subtotal || 0).toLocaleString("en-IN")}</td>
+            <td>₹${Number(order.shipping || 0).toLocaleString("en-IN")}</td>
+            <td>₹${Number(order.total || 0).toLocaleString("en-IN")}</td>
+            <td class="pending">${escapeHtml(order.status)}</td>
+            <td>${escapeHtml(date)}</td>
+          `;
+
+          table.appendChild(row);
+
+        });
+
+        status.textContent =
+          `${orders.length} order(s) loaded successfully.`;
+
+      } catch (err) {
+
+        console.error(err);
+
+        status.textContent = "Failed to load orders.";
+
+        error.innerHTML = `
+          <div class="error">
+            ${escapeHtml(err.message)}
+          </div>
+        `;
+
+      }
+
+    }
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+    loadOrders();
+
+  </script>
+
+</body>
+  </html>
