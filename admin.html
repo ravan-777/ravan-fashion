@@ -4,44 +4,272 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RAVAN Admin</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif}
-header{padding:22px 18px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
-h1{margin:0;font-size:24px;letter-spacing:2px}
-button{background:#fff;color:#000;border:0;border-radius:7px;padding:10px 15px;font-weight:bold;cursor:pointer}
-button.danger{background:#d33;color:#fff}
-button.secondary{background:#222;color:#fff}
-main{max-width:1200px;margin:auto;padding:20px}
-.status{padding:12px;border-radius:8px;background:#111;margin-bottom:18px}
-.live{color:#5fdb7a}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:25px}
-.card{background:#111;border:1px solid #242424;border-radius:10px;padding:18px}
-.card small{color:#888}
-.card strong{display:block;font-size:28px;margin-top:8px}
-.section{background:#0f0f0f;border:1px solid #242424;border-radius:10px;padding:18px;margin-bottom:22px}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
-.section h2{margin:0;font-size:19px}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:760px}
-th,td{padding:11px;border-bottom:1px solid #222;text-align:left;font-size:13px}
-th{color:#999}
-.badge{padding:5px 8px;border-radius:20px;background:#222;font-size:11px}
-.form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-label{font-size:12px;color:#aaa}
-input,textarea,select{width:100%;margin-top:5px;background:#171717;color:#fff;border:1px solid #333;border-radius:7px;padding:11px}
-textarea{min-height:80px;resize:vertical}
-.full{grid-column:1/-1}
-.checks{display:flex;gap:20px;align-items:center}
-.checks label{display:flex;gap:7px;align-items:center}
-.checks input{width:auto;margin:0}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-#productForm{display:none}
+
+body{
+  margin:0;
+  background:#080808;
+  color:#eee;
+  font-family:Arial,sans-serif
+}
+
+header{
+  padding:20px;
+  border-bottom:1px solid #222;
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+
+h1{
+  margin:0;
+  font-size:24px;
+  letter-spacing:2px
+}
+
+button{
+  background:#fff;
+  color:#000;
+  border:0;
+  border-radius:7px;
+  padding:10px 15px;
+  font-weight:bold;
+  cursor:pointer
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed
+}
+
+button.danger{
+  background:#d33;
+  color:#fff
+}
+
+button.secondary{
+  background:#222;
+  color:#fff
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:20px
+}
+
+.status{
+  padding:12px;
+  border-radius:8px;
+  background:#111;
+  margin-bottom:18px
+}
+
+.live{
+  color:#5fdb7a
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:25px
+}
+
+.card{
+  background:#111;
+  border:1px solid #242424;
+  border-radius:10px;
+  padding:18px
+}
+
+.card small{
+  color:#888
+}
+
+.card strong{
+  display:block;
+  font-size:28px;
+  margin-top:8px
+}
+
+.section{
+  background:#0f0f0f;
+  border:1px solid #242424;
+  border-radius:10px;
+  padding:18px;
+  margin-bottom:22px
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px
+}
+
+.section h2{
+  margin:0;
+  font-size:19px
+}
+
+.table-wrap{
+  overflow-x:auto
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:780px
+}
+
+th,td{
+  padding:11px;
+  border-bottom:1px solid #222;
+  text-align:left;
+  font-size:13px
+}
+
+th{
+  color:#999
+}
+
+.badge{
+  padding:5px 8px;
+  border-radius:20px;
+  background:#222;
+  font-size:11px
+}
+
+.form{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
+}
+
+label{
+  font-size:12px;
+  color:#aaa
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  margin-top:5px;
+  background:#171717;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:7px;
+  padding:11px;
+  outline:none
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#777
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical
+}
+
+.full{
+  grid-column:1/-1
+}
+
+.help{
+  display:block;
+  margin-top:5px;
+  color:#666;
+  font-size:11px
+}
+
+.checks{
+  display:flex;
+  gap:20px;
+  align-items:center
+}
+
+.checks label{
+  display:flex;
+  gap:7px;
+  align-items:center
+}
+
+.checks input{
+  width:auto;
+  margin:0
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:15px
+}
+
+#productForm{
+  display:none
+}
+
+.preview{
+  display:none;
+  margin-top:10px;
+  background:#151515;
+  border:1px solid #292929;
+  border-radius:8px;
+  padding:10px
+}
+
+.preview img{
+  width:120px;
+  height:120px;
+  object-fit:contain;
+  display:block
+}
+
+.preview.show{
+  display:block
+}
+
+.note{
+  padding:10px;
+  background:#151515;
+  border:1px solid #292929;
+  border-radius:8px;
+  margin-bottom:15px;
+  color:#aaa;
+  font-size:12px;
+  line-height:1.5
+}
+
 @media(max-width:700px){
- .grid{grid-template-columns:1fr}
- .form{grid-template-columns:1fr}
- main{padding:12px}
- header{padding:16px 12px}
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .form{
+    grid-template-columns:1fr
+  }
+
+  main{
+    padding:12px
+  }
+
+  header{
+    padding:16px 12px
+  }
+
+  h1{
+    font-size:19px
+  }
 }
 </style>
 </head>
@@ -61,30 +289,42 @@ textarea{min-height:80px;resize:vertical}
 </div>
 
 <div class="grid">
+
   <div class="card">
     <small>TOTAL ORDERS</small>
     <strong id="totalOrders">0</strong>
   </div>
+
   <div class="card">
     <small>PENDING ORDERS</small>
     <strong id="pendingOrders">0</strong>
   </div>
+
   <div class="card">
     <small>TOTAL SALES</small>
     <strong id="totalSales">₹0</strong>
   </div>
+
 </div>
+
 
 <!-- ORDERS -->
 
 <div class="section">
+
   <div class="section-head">
     <h2>Orders</h2>
-    <button class="secondary" onclick="loadOrders()">Refresh Orders</button>
+    <button
+      class="secondary"
+      onclick="loadOrders()">
+      Refresh Orders
+    </button>
   </div>
 
   <div class="table-wrap">
+
     <table>
+
       <thead>
         <tr>
           <th>Order</th>
@@ -96,112 +336,316 @@ textarea{min-height:80px;resize:vertical}
           <th>Date</th>
         </tr>
       </thead>
+
       <tbody id="ordersBody">
-        <tr><td colspan="7">Loading...</td></tr>
+        <tr>
+          <td colspan="7">Loading...</td>
+        </tr>
       </tbody>
+
     </table>
+
   </div>
+
 </div>
 
-<!-- PRODUCT MANAGEMENT -->
+
+<!-- PRODUCTS -->
 
 <div class="section">
+
   <div class="section-head">
     <h2>Product Management</h2>
-    <button onclick="showAdd()">+ Add Product</button>
+
+    <button onclick="showAdd()">
+      + Add Product
+    </button>
   </div>
 
+
+  <div class="note">
+    Add a product with image, size, colour, stock and affiliate information.
+    For multiple sizes or colours, separate values with commas.
+    Example: S, M, L, XL
+  </div>
+
+
   <div id="productForm">
+
     <div class="form">
 
+
+      <!-- NAME -->
+
       <div>
-        <label>Product Name</label>
-        <input id="pName" placeholder="Product name">
+        <label>Product Name *</label>
+        <input
+          id="pName"
+          placeholder="Product name">
       </div>
+
+
+      <!-- BRAND -->
 
       <div>
         <label>Brand</label>
-        <input id="pBrand" placeholder="Brand">
+        <input
+          id="pBrand"
+          placeholder="RAVAN">
       </div>
 
+
+      <!-- CATEGORY -->
+
       <div>
-        <label>Category</label>
+        <label>Category *</label>
+
         <select id="pCategory">
-          <option value="men">Men</option>
-          <option value="women">Women</option>
-          <option value="unisex">Unisex</option>
-          <option value="accessories">Accessories</option>
+
+          <option value="men">
+            Men
+          </option>
+
+          <option value="women">
+            Women
+          </option>
+
+          <option value="unisex">
+            Unisex
+          </option>
+
+          <option value="accessories">
+            Accessories
+          </option>
+
         </select>
+
       </div>
+
+
+      <!-- SELLER -->
 
       <div>
         <label>Seller / Partner</label>
-        <input id="pSeller" placeholder="Seller or partner">
+
+        <input
+          id="pSeller"
+          placeholder="Amazon / Flipkart / Partner">
       </div>
 
+
+      <!-- PRICE -->
+
       <div>
-        <label>Price ₹</label>
-        <input id="pPrice" type="number" min="0" placeholder="1499">
+        <label>Price ₹ *</label>
+
+        <input
+          id="pPrice"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="1499">
       </div>
+
+
+      <!-- OLD PRICE -->
 
       <div>
         <label>Old Price ₹</label>
-        <input id="pOldPrice" type="number" min="0" placeholder="1999">
+
+        <input
+          id="pOldPrice"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="1999">
       </div>
+
+
+      <!-- STOCK -->
 
       <div>
         <label>Stock</label>
-        <input id="pStock" type="number" min="0" value="0">
+
+        <input
+          id="pStock"
+          type="number"
+          min="0"
+          step="1"
+          value="0">
       </div>
+
+
+      <!-- TAG -->
 
       <div>
         <label>Tag</label>
-        <input id="pTag" placeholder="NEW / SALE / BESTSELLER">
+
+        <input
+          id="pTag"
+          placeholder="NEW / SALE / BESTSELLER">
       </div>
 
+
+      <!-- SIZES -->
+
+      <div>
+        <label>Sizes</label>
+
+        <input
+          id="pSizes"
+          placeholder="S, M, L, XL">
+
+        <span class="help">
+          Example: XS, S, M, L
+        </span>
+      </div>
+
+
+      <!-- COLOURS -->
+
+      <div>
+        <label>Colours</label>
+
+        <input
+          id="pColors"
+          placeholder="Black, White">
+
+        <span class="help">
+          Example: Black, Charcoal, White
+        </span>
+      </div>
+
+
+      <!-- DESCRIPTION -->
+
       <div class="full">
+
         <label>Description</label>
-        <textarea id="pDescription" placeholder="Product description"></textarea>
+
+        <textarea
+          id="pDescription"
+          placeholder="Product description"></textarea>
+
       </div>
+
+
+      <!-- IMAGE -->
 
       <div class="full">
-        <label>Image URL</label>
-        <input id="pImage" placeholder="https://...">
+
+        <label>Product Image URL</label>
+
+        <input
+          id="pImage"
+          placeholder="https://example.com/product.jpg"
+          oninput="previewImage()">
+
+        <span class="help">
+          Use a direct image URL. Do not copy marketplace images unless you have permission.
+        </span>
+
+        <div
+          id="imagePreview"
+          class="preview">
+
+          <img
+            id="previewImg"
+            alt="Product preview">
+
+        </div>
+
       </div>
 
+
+      <!-- PRODUCT URL -->
+
       <div>
+
         <label>Original Product URL</label>
-        <input id="pProductUrl" placeholder="https://...">
+
+        <input
+          id="pProductUrl"
+          placeholder="https://...">
+
       </div>
 
+
+      <!-- AFFILIATE -->
+
       <div>
+
         <label>Affiliate URL</label>
-        <input id="pAffiliate" placeholder="https://...">
+
+        <input
+          id="pAffiliate"
+          placeholder="https://...">
+
+        <span class="help">
+          Customer will be sent to this URL using VIEW DEAL.
+        </span>
+
       </div>
+
+
+      <!-- STATUS -->
 
       <div class="full checks">
-        <label>
-          <input id="pFeatured" type="checkbox">
-          Featured
-        </label>
 
         <label>
-          <input id="pActive" type="checkbox" checked>
-          Active
+
+          <input
+            id="pFeatured"
+            type="checkbox">
+
+          Featured
+
         </label>
+
+
+        <label>
+
+          <input
+            id="pActive"
+            type="checkbox"
+            checked>
+
+          Active
+
+        </label>
+
       </div>
 
     </div>
 
+
     <div class="actions">
-      <button onclick="saveProduct()">Save Product</button>
-      <button class="secondary" onclick="hideForm()">Cancel</button>
+
+      <button
+        id="saveBtn"
+        onclick="saveProduct()">
+        Save Product
+      </button>
+
+      <button
+        class="secondary"
+        onclick="hideForm()">
+        Cancel
+      </button>
+
     </div>
+
   </div>
 
+
+  <!-- PRODUCT TABLE -->
+
   <div class="table-wrap">
+
     <table>
+
       <thead>
+
         <tr>
           <th>Product</th>
           <th>Brand</th>
@@ -211,278 +655,936 @@ textarea{min-height:80px;resize:vertical}
           <th>Status</th>
           <th>Actions</th>
         </tr>
+
       </thead>
+
       <tbody id="productsBody">
-        <tr><td colspan="7">Loading...</td></tr>
+
+        <tr>
+          <td colspan="7">
+            Loading...
+          </td>
+        </tr>
+
       </tbody>
+
     </table>
+
   </div>
+
 </div>
 
 </main>
 
-<script>
-let editingId=null;
 
-const $=id=>document.getElementById(id);
+<script>
+
+let editingId = null;
+
+const $ = id =>
+  document.getElementById(id);
+
 
 function money(n){
-  return '₹'+Number(n||0).toLocaleString('en-IN');
+
+  return '₹' +
+    Number(n || 0)
+      .toLocaleString('en-IN');
+
 }
+
 
 function esc(v){
-  return String(v??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#039;'
-  }[m]));
+
+  return String(v ?? '')
+    .replace(/[&<>"']/g, m => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#039;'
+    }[m]));
+
 }
 
-async function api(url,options={}){
-  options.credentials='include';
-  options.cache='no-store';
-  options.headers={
+
+function cleanList(value, fallback){
+
+  const result =
+    String(value || '')
+      .split(',')
+      .map(x => x.trim())
+      .filter(Boolean);
+
+  return result.length
+    ? [...new Set(result)]
+    : fallback;
+
+}
+
+
+function validUrl(value){
+
+  if(!value) return true;
+
+  try{
+
+    const u = new URL(value);
+
+    return (
+      u.protocol === 'http:' ||
+      u.protocol === 'https:'
+    );
+
+  }catch{
+
+    return false;
+
+  }
+
+}
+
+
+async function api(url, options = {}){
+
+  options.credentials = 'include';
+  options.cache = 'no-store';
+
+  options.headers = {
     'Accept':'application/json',
-    ...(options.body?{'Content-Type':'application/json'}:{}),
-    ...(options.headers||{})
+
+    ...(options.body
+      ? {'Content-Type':'application/json'}
+      : {}),
+
+    ...(options.headers || {})
   };
 
-  const r=await fetch(url,options);
-  const text=await r.text();
+  const response =
+    await fetch(url, options);
+
+  const text =
+    await response.text();
 
   let data;
-  try{data=JSON.parse(text)}
-  catch{throw new Error('Server returned invalid response')}
 
-  if(!r.ok||data.ok===false){
-    throw new Error(data.error||'Request failed');
+  try{
+
+    data = JSON.parse(text);
+
+  }catch{
+
+    throw new Error(
+      'Server returned invalid response'
+    );
+
+  }
+
+  if(
+    !response.ok ||
+    data.ok === false
+  ){
+
+    throw new Error(
+      data.error ||
+      'Request failed'
+    );
+
   }
 
   return data;
+
 }
+
+
+/* -------------------------
+   ORDERS
+------------------------- */
 
 async function loadOrders(){
-  try{
-    const data=await api('/api/admin/orders');
-    const orders=data.orders||[];
 
-    $('totalOrders').textContent=orders.length;
-    $('pendingOrders').textContent=
-      orders.filter(x=>
-        String(x.status).toLowerCase().includes('pending')
+  try{
+
+    const data =
+      await api('/api/admin/orders');
+
+    const orders =
+      data.orders || [];
+
+    $('totalOrders')
+      .textContent =
+      orders.length;
+
+    $('pendingOrders')
+      .textContent =
+      orders.filter(x =>
+        String(x.status)
+          .toLowerCase()
+          .includes('pending')
       ).length;
 
-    $('totalSales').textContent=money(
-      orders.reduce((sum,x)=>sum+Number(x.total||0),0)
-    );
+    $('totalSales')
+      .textContent =
+      money(
+        orders.reduce(
+          (sum,x) =>
+            sum + Number(x.total || 0),
+          0
+        )
+      );
 
-    $('ordersBody').innerHTML=orders.length
-      ?orders.map(o=>`
+    $('ordersBody')
+      .innerHTML =
+      orders.length
+
+      ? orders.map(o => `
+
         <tr>
-          <td><b>${esc(o.id)}</b></td>
-          <td>${esc(o.customer_email)}</td>
-          <td>${money(o.subtotal)}</td>
-          <td>${money(o.shipping)}</td>
-          <td>${money(o.total)}</td>
-          <td><span class="badge">${esc(o.status)}</span></td>
-          <td>${new Date(o.created_at).toLocaleString('en-IN')}</td>
-        </tr>
-      `).join('')
-      :'<tr><td colspan="7">No orders found.</td></tr>';
 
-    $('statusText').textContent=
-      ' '+orders.length+' order(s) loaded successfully.';
-  }catch(e){
-    $('ordersBody').innerHTML=
-      `<tr><td colspan="7">${esc(e.message)}</td></tr>`;
-    $('statusText').textContent=' '+e.message;
-  }
-}
+          <td>
+            <b>${esc(o.id)}</b>
+          </td>
 
-async function loadProducts(){
-  try{
-    const data=await api('/api/admin/products');
-    const products=data.products||[];
+          <td>
+            ${esc(o.customer_email)}
+          </td>
 
-    $('productsBody').innerHTML=products.length
-      ?products.map(p=>`
-        <tr>
-          <td><b>${esc(p.name)}</b></td>
-          <td>${esc(p.brand)}</td>
-          <td>${esc(p.category)}</td>
-          <td>${money(p.price)}</td>
-          <td>${Number(p.stock||0)}</td>
+          <td>
+            ${money(o.subtotal)}
+          </td>
+
+          <td>
+            ${money(o.shipping)}
+          </td>
+
+          <td>
+            ${money(o.total)}
+          </td>
+
           <td>
             <span class="badge">
-              ${Number(p.active)?'ACTIVE':'INACTIVE'}
+              ${esc(o.status)}
             </span>
           </td>
+
           <td>
+            ${new Date(
+              o.created_at
+            ).toLocaleString('en-IN')}
+          </td>
+
+        </tr>
+
+      `).join('')
+
+      : `
+        <tr>
+          <td colspan="7">
+            No orders found.
+          </td>
+        </tr>
+      `;
+
+    $('statusText')
+      .textContent =
+      ' ' +
+      orders.length +
+      ' order(s) loaded successfully.';
+
+  }catch(e){
+
+    $('ordersBody')
+      .innerHTML = `
+        <tr>
+          <td colspan="7">
+            ${esc(e.message)}
+          </td>
+        </tr>
+      `;
+
+    $('statusText')
+      .textContent =
+      ' ' + e.message;
+
+  }
+
+}
+
+
+/* -------------------------
+   PRODUCTS
+------------------------- */
+
+async function loadProducts(){
+
+  try{
+
+    const data =
+      await api('/api/admin/products');
+
+    const products =
+      data.products || [];
+
+    $('productsBody')
+      .innerHTML =
+      products.length
+
+      ? products.map(p => `
+
+        <tr>
+
+          <td>
+            <b>${esc(p.name)}</b>
+          </td>
+
+          <td>
+            ${esc(p.brand)}
+          </td>
+
+          <td>
+            ${esc(p.category)}
+          </td>
+
+          <td>
+            ${money(p.price)}
+          </td>
+
+          <td>
+            ${Number(p.stock || 0)}
+          </td>
+
+          <td>
+            <span class="badge">
+              ${
+                Number(p.active)
+                ? 'ACTIVE'
+                : 'INACTIVE'
+              }
+            </span>
+          </td>
+
+          <td>
+
             <div class="actions">
+
               <button
                 class="secondary"
                 onclick='editProduct(${JSON.stringify(p)})'>
                 Edit
               </button>
+
               ${
                 Number(p.active)
-                ?`<button class="danger" onclick="deactivateProduct('${esc(p.id)}')">Deactivate</button>`
-                :`<button onclick="activateProduct('${esc(p.id)}')">Activate</button>`
+
+                ? `
+                  <button
+                    class="danger"
+                    onclick="deactivateProduct('${esc(p.id)}')">
+                    Deactivate
+                  </button>
+                `
+
+                : `
+                  <button
+                    onclick="activateProduct('${esc(p.id)}')">
+                    Activate
+                  </button>
+                `
               }
+
             </div>
+
+          </td>
+
+        </tr>
+
+      `).join('')
+
+      : `
+        <tr>
+          <td colspan="7">
+            No products found.
           </td>
         </tr>
-      `).join('')
-      :'<tr><td colspan="7">No products found.</td></tr>';
+      `;
 
   }catch(e){
-    $('productsBody').innerHTML=
-      `<tr><td colspan="7">${esc(e.message)}</td></tr>`;
+
+    $('productsBody')
+      .innerHTML = `
+        <tr>
+          <td colspan="7">
+            ${esc(e.message)}
+          </td>
+        </tr>
+      `;
+
   }
+
 }
+
+
+/* -------------------------
+   FORM
+------------------------- */
 
 function showAdd(){
-  editingId=null;
+
+  editingId = null;
+
   clearForm();
-  $('productForm').style.display='block';
-  window.scrollTo({top:$('productForm').offsetTop-20,behavior:'smooth'});
+
+  $('productForm')
+    .style.display = 'block';
+
+  window.scrollTo({
+    top:
+      $('productForm')
+        .offsetTop - 20,
+    behavior:'smooth'
+  });
+
 }
+
 
 function hideForm(){
-  $('productForm').style.display='none';
-  editingId=null;
+
+  $('productForm')
+    .style.display = 'none';
+
+  editingId = null;
+
 }
+
 
 function clearForm(){
-  $('pName').value='';
-  $('pBrand').value='';
-  $('pCategory').value='unisex';
-  $('pSeller').value='';
-  $('pPrice').value='';
-  $('pOldPrice').value='';
-  $('pStock').value='0';
-  $('pTag').value='';
-  $('pDescription').value='';
-  $('pImage').value='';
-  $('pProductUrl').value='';
-  $('pAffiliate').value='';
-  $('pFeatured').checked=false;
-  $('pActive').checked=true;
+
+  $('pName').value = '';
+  $('pBrand').value = '';
+  $('pCategory').value = 'unisex';
+  $('pSeller').value = '';
+
+  $('pPrice').value = '';
+  $('pOldPrice').value = '';
+  $('pStock').value = '0';
+  $('pTag').value = '';
+
+  $('pSizes').value =
+    'S, M, L, XL';
+
+  $('pColors').value =
+    'Black';
+
+  $('pDescription').value = '';
+
+  $('pImage').value = '';
+  $('pProductUrl').value = '';
+  $('pAffiliate').value = '';
+
+  $('pFeatured').checked = false;
+  $('pActive').checked = true;
+
+  clearPreview();
+
 }
+
 
 function editProduct(p){
-  editingId=String(p.id);
 
-  $('pName').value=p.name||'';
-  $('pBrand').value=p.brand||'';
-  $('pCategory').value=p.category||'unisex';
-  $('pSeller').value=p.seller||'';
-  $('pPrice').value=p.price??'';
-  $('pOldPrice').value=p.old_price??'';
-  $('pStock').value=p.stock??0;
-  $('pTag').value=p.tag||'';
-  $('pDescription').value=p.description||'';
-  $('pImage').value=p.image_url||'';
-  $('pProductUrl').value=p.product_url||'';
-  $('pAffiliate').value=p.affiliate_url||'';
-  $('pFeatured').checked=Number(p.featured)===1;
-  $('pActive').checked=Number(p.active)===1;
+  editingId =
+    String(p.id);
 
-  $('productForm').style.display='block';
-  window.scrollTo({top:$('productForm').offsetTop-20,behavior:'smooth'});
+  $('pName').value =
+    p.name || '';
+
+  $('pBrand').value =
+    p.brand || '';
+
+  $('pCategory').value =
+    p.category || 'unisex';
+
+  $('pSeller').value =
+    p.seller || '';
+
+  $('pPrice').value =
+    p.price ?? '';
+
+  $('pOldPrice').value =
+    p.old_price ?? '';
+
+  $('pStock').value =
+    p.stock ?? 0;
+
+  $('pTag').value =
+    p.tag || '';
+
+  const sizes =
+    Array.isArray(p.sizes)
+      ? p.sizes
+      : parseStoredList(p.sizes);
+
+  const colors =
+    Array.isArray(p.colors)
+      ? p.colors
+      : parseStoredList(p.colors);
+
+  $('pSizes').value =
+    sizes.join(', ');
+
+  $('pColors').value =
+    colors.join(', ');
+
+  $('pDescription').value =
+    p.description || '';
+
+  $('pImage').value =
+    p.image_url || '';
+
+  $('pProductUrl').value =
+    p.product_url || '';
+
+  $('pAffiliate').value =
+    p.affiliate_url || '';
+
+  $('pFeatured').checked =
+    Number(p.featured) === 1;
+
+  $('pActive').checked =
+    Number(p.active) === 1;
+
+  previewImage();
+
+  $('productForm')
+    .style.display = 'block';
+
+  window.scrollTo({
+    top:
+      $('productForm')
+        .offsetTop - 20,
+    behavior:'smooth'
+  });
+
 }
 
-function formData(){
-  return {
-    name:$('pName').value.trim(),
-    brand:$('pBrand').value.trim(),
-    category:$('pCategory').value,
-    seller:$('pSeller').value.trim(),
-    price:Number($('pPrice').value||0),
-    old_price:$('pOldPrice').value===''?null:Number($('pOldPrice').value),
-    stock:Number($('pStock').value||0),
-    tag:$('pTag').value.trim(),
-    description:$('pDescription').value.trim(),
-    image_url:$('pImage').value.trim(),
-    product_url:$('pProductUrl').value.trim(),
-    affiliate_url:$('pAffiliate').value.trim(),
-    featured:$('pFeatured').checked,
-    active:$('pActive').checked
-  };
-}
 
-async function saveProduct(){
-  const data=formData();
+function parseStoredList(value){
 
-  if(!data.name){
-    alert('Product name is required');
-    return;
-  }
-
-  if(data.price<0||data.stock<0){
-    alert('Price and stock cannot be negative');
-    return;
-  }
+  if(Array.isArray(value))
+    return value;
 
   try{
+
+    const x =
+      JSON.parse(value || '[]');
+
+    return Array.isArray(x)
+      ? x
+      : [];
+
+  }catch{
+
+    return [];
+
+  }
+
+}
+
+
+/* -------------------------
+   IMAGE PREVIEW
+------------------------- */
+
+function clearPreview(){
+
+  $('imagePreview')
+    .classList.remove('show');
+
+  $('previewImg').removeAttribute('src');
+
+}
+
+
+function previewImage(){
+
+  const url =
+    $('pImage').value.trim();
+
+  if(!url){
+
+    clearPreview();
+    return;
+
+  }
+
+  if(!validUrl(url)){
+
+    clearPreview();
+    return;
+
+  }
+
+  $('previewImg').src = url;
+
+  $('previewImg').onerror =
+    clearPreview;
+
+  $('imagePreview')
+    .classList.add('show');
+
+}
+
+
+/* -------------------------
+   FORM DATA
+------------------------- */
+
+function formData(){
+
+  return {
+
+    name:
+      $('pName')
+        .value
+        .trim(),
+
+    brand:
+      $('pBrand')
+        .value
+        .trim(),
+
+    category:
+      $('pCategory')
+        .value,
+
+    seller:
+      $('pSeller')
+        .value
+        .trim(),
+
+    price:
+      Number(
+        $('pPrice')
+          .value || 0
+      ),
+
+    old_price:
+      $('pOldPrice')
+        .value === ''
+        ? null
+        : Number(
+            $('pOldPrice')
+              .value
+          ),
+
+    stock:
+      Number(
+        $('pStock')
+          .value || 0
+      ),
+
+    tag:
+      $('pTag')
+        .value
+        .trim(),
+
+    description:
+      $('pDescription')
+        .value
+        .trim(),
+
+    image_url:
+      $('pImage')
+        .value
+        .trim(),
+
+    product_url:
+      $('pProductUrl')
+        .value
+        .trim(),
+
+    affiliate_url:
+      $('pAffiliate')
+        .value
+        .trim(),
+
+    sizes:
+      cleanList(
+        $('pSizes').value,
+        ['OS']
+      ),
+
+    colors:
+      cleanList(
+        $('pColors').value,
+        ['Black']
+      ),
+
+    featured:
+      $('pFeatured')
+        .checked,
+
+    active:
+      $('pActive')
+        .checked
+
+  };
+
+}
+
+
+/* -------------------------
+   SAVE
+------------------------- */
+
+async function saveProduct(){
+
+  const data =
+    formData();
+
+  if(!data.name){
+
+    alert(
+      'Product name is required'
+    );
+
+    return;
+
+  }
+
+  if(
+    !Number.isFinite(data.price) ||
+    data.price < 0
+  ){
+
+    alert(
+      'Enter a valid product price.'
+    );
+
+    return;
+
+  }
+
+  if(
+    !Number.isFinite(data.stock) ||
+    data.stock < 0
+  ){
+
+    alert(
+      'Enter a valid stock value.'
+    );
+
+    return;
+
+  }
+
+  if(
+    data.old_price !== null &&
+    (
+      !Number.isFinite(data.old_price) ||
+      data.old_price < 0
+    )
+  ){
+
+    alert(
+      'Enter a valid old price.'
+    );
+
+    return;
+
+  }
+
+  if(
+    data.image_url &&
+    !validUrl(data.image_url)
+  ){
+
+    alert(
+      'Image URL must start with http:// or https://'
+    );
+
+    return;
+
+  }
+
+  if(
+    data.product_url &&
+    !validUrl(data.product_url)
+  ){
+
+    alert(
+      'Product URL must start with http:// or https://'
+    );
+
+    return;
+
+  }
+
+  if(
+    data.affiliate_url &&
+    !validUrl(data.affiliate_url)
+  ){
+
+    alert(
+      'Affiliate URL must start with http:// or https://'
+    );
+
+    return;
+
+  }
+
+
+  const btn =
+    $('saveBtn');
+
+  btn.disabled = true;
+  btn.textContent =
+    editingId
+      ? 'Updating...'
+      : 'Saving...';
+
+
+  try{
+
     if(editingId){
-      await api('/api/admin/products/'+encodeURIComponent(editingId),{
-        method:'PUT',
-        body:JSON.stringify(data)
-      });
-      alert('Product updated successfully');
+
+      await api(
+        '/api/admin/products/' +
+        encodeURIComponent(editingId),
+        {
+          method:'PUT',
+          body:
+            JSON.stringify(data)
+        }
+      );
+
+      alert(
+        'Product updated successfully.'
+      );
+
     }else{
-      await api('/api/admin/products',{
-        method:'POST',
-        body:JSON.stringify(data)
-      });
-      alert('Product created successfully');
+
+      await api(
+        '/api/admin/products',
+        {
+          method:'POST',
+          body:
+            JSON.stringify(data)
+        }
+      );
+
+      alert(
+        'Product created successfully.'
+      );
+
     }
 
     hideForm();
+
     await loadProducts();
 
   }catch(e){
-    alert(e.message);
+
+    alert(
+      e.message
+    );
+
+  }finally{
+
+    btn.disabled = false;
+
+    btn.textContent =
+      'Save Product';
+
   }
+
 }
+
+
+/* -------------------------
+   ACTIVATE / DEACTIVATE
+------------------------- */
 
 async function deactivateProduct(id){
-  if(!confirm('Deactivate this product?'))return;
+
+  if(
+    !confirm(
+      'Deactivate this product?'
+    )
+  ){
+
+    return;
+
+  }
 
   try{
-    await api('/api/admin/products/'+encodeURIComponent(id),{
-      method:'DELETE'
-    });
+
+    await api(
+      '/api/admin/products/' +
+      encodeURIComponent(id),
+      {
+        method:'DELETE'
+      }
+    );
+
     await loadProducts();
+
   }catch(e){
-    alert(e.message);
+
+    alert(
+      e.message
+    );
+
   }
+
 }
+
 
 async function activateProduct(id){
+
   try{
-    await api('/api/admin/products/'+encodeURIComponent(id),{
-      method:'PUT',
-      body:JSON.stringify({active:true})
-    });
+
+    await api(
+      '/api/admin/products/' +
+      encodeURIComponent(id),
+      {
+        method:'PUT',
+        body:
+          JSON.stringify({
+            active:true
+          })
+      }
+    );
+
     await loadProducts();
+
   }catch(e){
-    alert(e.message);
+
+    alert(
+      e.message
+    );
+
   }
+
 }
 
+
+/* -------------------------
+   LOAD ALL
+------------------------- */
+
 async function loadAll(){
+
   await Promise.all([
     loadOrders(),
     loadProducts()
   ]);
+
 }
 
+
 loadAll();
+
 </script>
 
 </body>
-  </html>
+        </html>
